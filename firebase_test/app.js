@@ -1,5 +1,5 @@
 (function() {
-	console.log('js file loaded');
+    console.log('js file loaded');
     // Joy's apiKey
     // const config = {
     //     apiKey: "AIzaSyDLFK8TCZ14wnZhRNhfyFswMda21yIowf0",
@@ -10,7 +10,7 @@
     //     messagingSenderId: "562245129922"
     // };
 
-    var config = {
+    const config = {
         apiKey: "AIzaSyC0kBKQC-Dgw_FJD9CKfwHtqVQoBG6ePwE",
         authDomain: "test-ji-5fef4.firebaseapp.com",
         databaseURL: "https://test-ji-5fef4.firebaseio.com",
@@ -35,6 +35,21 @@
         const email = inputEmail.value;
         const pass = inputPassword.value;
         const auth = firebase.auth();
+
+        firebase.auth().signInWithEmailAndPassword(email, password).catch(function(error) {
+            // Handle Errors here.
+            var errorCode = error.code;
+            var errorMessage = error.message;
+            // [START_EXCLUDE]
+            if (errorCode === 'auth/wrong-password') {
+                alert('Wrong password.');
+            } else {
+                alert(errorMessage);
+            }
+            console.log(error);
+            // document.getElementById('quickstart-sign-in').disabled = false;
+            // [END_EXCLUDE]
+        });
     });
 
     btnUp.addEventListener('click', e => {
@@ -43,8 +58,20 @@
         const pass = inputPassword.value;
         const auth = firebase.auth();
 
-        const promise = auth.createUserWithEmailAndPassword(email, pass);
-        promise.catch(e => console.log(e.message));
+        firebase.auth().createUserWithEmailAndPassword(email, password).catch(function(error) {
+            // Handle Errors here.
+            var errorCode = error.code;
+            var errorMessage = error.message;
+            // [START_EXCLUDE]
+            if (errorCode == 'auth/weak-password') {
+                alert('The password is too weak.');
+            } else {
+                alert(errorMessage);
+            }
+            console.log(error);
+            // [END_EXCLUDE]
+        });
+
     });
 
     // add realtime listener
