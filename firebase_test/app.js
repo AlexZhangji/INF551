@@ -1,4 +1,4 @@
-(function() {
+function appInit() {
     console.log('js file loaded');
     // Joy's apiKey
     // const config = {
@@ -36,7 +36,7 @@
         const pass = inputPassword.value;
         const auth = firebase.auth();
 
-        firebase.auth().signInWithEmailAndPassword(email, password).catch(function(error) {
+        firebase.auth().signInWithEmailAndPassword(email, pass).catch(function(error) {
             // Handle Errors here.
             var errorCode = error.code;
             var errorMessage = error.message;
@@ -58,7 +58,7 @@
         const pass = inputPassword.value;
         const auth = firebase.auth();
 
-        firebase.auth().createUserWithEmailAndPassword(email, password).catch(function(error) {
+        firebase.auth().createUserWithEmailAndPassword(email, pass).catch(function(error) {
             // Handle Errors here.
             var errorCode = error.code;
             var errorMessage = error.message;
@@ -72,6 +72,7 @@
             // [END_EXCLUDE]
         });
 
+				console.log('signed up success.');
     });
 
     // add realtime listener
@@ -83,4 +84,4 @@
                 console.log('not logged in');
             }
         });
-});
+};
