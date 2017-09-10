@@ -30,7 +30,6 @@ def scan(head_pos_, pos_queue_):
         # print path
         return path
     # if two has same distance, head will move to inner most stack
-    # TODO fix the same distance issue
     next_head = get_closest_num(head_pos_, pos_queue_)
 
     if next_head != head_pos_:
