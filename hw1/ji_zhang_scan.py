@@ -1,3 +1,6 @@
+import sys
+
+
 def parse_data(fname):
     with open(fname) as f:
         # assume only two lines
@@ -15,7 +18,7 @@ def scan(head_pos_, pos_queue_):
         return path
     # if two has same distance, head will move to inner most stack
     # TODO fix the same distance issue
-    next_head = min(pos_queue_, key=lambda x: abs(x - head_pos))
+    next_head = min(pos_queue_, key=lambda x: abs(x - head_pos_))
 
     if next_head != head_pos_:
         path.append(next_head)
@@ -30,12 +33,12 @@ def scan(head_pos_, pos_queue_):
         cur_head_index = pos_queue_.index(next_head)
         pos_queue_.remove(head_pos_)
 
-    if 199 not in pos_queue and head_pos < next_head and head_pos != 199:
-        pos_queue.append(199)
+    if 199 not in pos_queue_ and head_pos_ < next_head and head_pos_ != 199:
+        pos_queue_.append(199)
         left = False
 
-    elif 0 not in pos_queue and head_pos > next_head and head_pos != 0:
-        pos_queue.insert(0, 0)
+    elif 0 not in pos_queue_ and head_pos_ > next_head and head_pos_ != 0:
+        pos_queue_.insert(0, 0)
         left = True
         cur_head_index += 1
 
@@ -49,20 +52,22 @@ def scan(head_pos_, pos_queue_):
     return path
 
 
-# fname = sys.argv[1:][0]
+# fname = 'test1.txt'
+if sys.argv[1:]:
+    fname = sys.argv[1:][0]
+    # fname = 'test1.txt'
 
-fname = 'test1.txt'
-head_pos, raw_pos_queue = parse_data(fname)
-# print head_pos, pos_queue
+    head_pos, raw_pos_queue = parse_data(fname)
+    # print head_pos, pos_queue
 
-pos_queue = sorted([int(num) for num in raw_pos_queue.split(',')])
-# if pos_queue does not has 199, add to it
+    pos_queue = sorted([int(num) for num in raw_pos_queue.split(',')])
+    # if pos_queue does not has 199, add to it
 
-result_path = scan(head_pos, pos_queue)
+    result_path = scan(head_pos, pos_queue)
 
-tot_cost = abs(head_pos - result_path[0])
-for i in range(len(result_path) - 1):
-    tot_cost += abs(result_path[i] - result_path[i + 1])
+    tot_cost = abs(head_pos - result_path[0])
+    for i in range(len(result_path) - 1):
+        tot_cost += abs(result_path[i] - result_path[i + 1])
 
-res_path_str = ','.join(str(x) for x in result_path)
-print res_path_str, '\n', tot_cost, '\n', '{},{}'.format(result_path[-1], tot_cost)
+    res_path_str = ','.join(str(x) for x in result_path)
+    print res_path_str, '\n', tot_cost, '\n', '{},{}'.format(result_path[-1], tot_cost)

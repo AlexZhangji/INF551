@@ -1,3 +1,6 @@
+import ji_zhang_scan  # is this fine???
+
+
 def parse_data(fname):
     with open(fname) as f:
         # assume only two lines
@@ -7,17 +10,19 @@ def parse_data(fname):
 
 def f_scan(head_pos_, pos_queue_):
     path = []
-    if len(pos_queue_) == 0:
-        # print path
-        return path
 
-    # if two has same distance, head will move to inner most stack
-    # TODO fix the same distance issue
-    next_head = min(pos_queue_, key=lambda x: abs(x - head_pos_))
+    while len(pos_queue_) > 10:
+        first_list = sorted(pos_queue_[:11])
+        path += ji_zhang_scan.scan(head_pos_, first_list)
 
-    # break the list to two parts, first iterate the one
-    cur_head_index = pos_queue_.index(next_head)
-    path = pos_queue_[cur_head_index:] + list(reversed(pos_queue_[:cur_head_index]))
+        # update head position and position list
+        head_pos_ = path[-1]
+        pos_queue_ = pos_queue_[11:]
+
+    if len(pos_queue_) <= 10:
+        pos_queue_ = sorted(pos_queue_)
+        path += ji_zhang_scan.scan(head_pos_, pos_queue_)
+
     return path
 
 
@@ -34,12 +39,8 @@ def print_result(res_path, head_pos_):
 
 fname = 'test1.txt'
 head_pos, raw_pos_queue = parse_data(fname)
-# print head_pos, pos_queue
-
-pos_queue = sorted([int(num) for num in raw_pos_queue.split(',')])
-# if pos_queue does not has 199, add to it
-if 199 not in pos_queue:
-    pos_queue.append(199)
-
+print 'head:{}'.format(head_pos)
+# not same with scan or sstf, not sorted list
+pos_queue = ([int(num) for num in raw_pos_queue.split(',')])
 result_path = f_scan(head_pos, pos_queue)
 print_result(result_path, head_pos)
