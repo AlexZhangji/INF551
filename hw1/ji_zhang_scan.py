@@ -8,6 +8,19 @@ def parse_data(fname):
         return int(text_list[0]), text_list[1]
 
 
+def get_closest_num(pos_head_, pos_queue_):
+    closest_pos = []
+    least_distance = sys.maxint
+
+    for pos in pos_queue_:
+        distance = abs(pos_head_ - pos)
+        if distance < least_distance or distance == least_distance and pos < closest_pos:
+            least_distance = distance
+            closest_pos = pos
+
+    return closest_pos
+
+
 def scan(head_pos_, pos_queue_):
     path = []
     left = True
@@ -18,7 +31,7 @@ def scan(head_pos_, pos_queue_):
         return path
     # if two has same distance, head will move to inner most stack
     # TODO fix the same distance issue
-    next_head = min(pos_queue_, key=lambda x: abs(x - head_pos_))
+    next_head = get_closest_num(head_pos_, pos_queue_)
 
     if next_head != head_pos_:
         path.append(next_head)

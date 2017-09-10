@@ -13,11 +13,13 @@ def f_scan(head_pos_, pos_queue_):
 
     while len(pos_queue_) > 10:
         first_list = sorted(pos_queue_[:11])
+        # copy list of rest posistions, in case 199 and 0 added to mess up the index
+        rest_list = pos_queue_[11:]
         path += ji_zhang_scan.scan(head_pos_, first_list)
 
         # update head position and position list
         head_pos_ = path[-1]
-        pos_queue_ = pos_queue_[11:]
+        pos_queue_ = rest_list
 
     if len(pos_queue_) <= 10:
         pos_queue_ = sorted(pos_queue_)
@@ -37,7 +39,7 @@ def print_result(res_path, head_pos_):
 
 # fname = sys.argv[1:][0]
 
-fname = 'test1.txt'
+fname = 'test7.txt'
 head_pos, raw_pos_queue = parse_data(fname)
 print 'head:{}'.format(head_pos)
 # not same with scan or sstf, not sorted list
