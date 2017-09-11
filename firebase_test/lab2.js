@@ -31,18 +31,34 @@ function writeUserData(userId, name, email) {
 }
 
 
-function updateUserData(userId, phone) {
+function updateUserData(userId, email) {
     firebase.database().ref('users/' + userId).update({
-        phone: phone
+        email: email
     });
 }
+
+
+function deleteUserData(userId) {
+    console.log(userId + ' is deleted.');
+    firebase.database().ref('users/' + userId).remove();
+}
+
+
+function postNewUserData(name, email) {
+    firebase.database().ref('users/').set({
+        username: name,
+        email: email
+    });
+}
+
 
 
 function retriveData() {
     userRef = firebase.database().ref("users");
     userRef.on("value", function(snapshot) {
         snapshot.forEach(function(child) {
-            console.log(child.key + ": " + child.val());
+            console.log(child.key);
+            console.log(child.val());
         });
     });
 }
@@ -57,6 +73,8 @@ function filterData() {
         });
     });
 }
+
+
 
 /*      var big = document.getElementById('big');
       var dbRef = firebase.database().ref().child('text');
