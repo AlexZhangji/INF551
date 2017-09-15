@@ -14,7 +14,7 @@ def f_scan(head_pos_, pos_queue_):
 
     while len(pos_queue_) > 10:
         first_list = sorted(pos_queue_[:10])
-        # copy list of rest posistions, in case 199 and 0 added to mess up the index
+        # copy list of rest positions, in case 199 and 0 added to mess up the index
         cur_path, cur_extra = ji_zhang_scan.scan(head_pos_, first_list)
         extra += cur_extra
         path += cur_path
@@ -33,17 +33,19 @@ def f_scan(head_pos_, pos_queue_):
 
 
 # fname = sys.argv[1:][0]
+if sys.argv[1:]:
+    fname = sys.argv[1:][0]
+    # fname = 'test5.txt'
 
-fname = 'test5.txt'
-head_pos, raw_pos_queue = parse_data(fname)
-print 'head:{}'.format(head_pos)
-# not same with scan or sstf, not sorted list
-pos_queue = ([int(num) for num in raw_pos_queue.split(',')])
-result_path, extra = f_scan(head_pos, pos_queue)
+    head_pos, raw_pos_queue = parse_data(fname)
+    print 'head:{}'.format(head_pos)
+    # not same with scan or sstf, not sorted list
+    pos_queue = ([int(num) for num in raw_pos_queue.split(',')])
+    result_path, extra = f_scan(head_pos, pos_queue)
 
-tot_cost = abs(head_pos - result_path[0]) + extra
-for i in range(len(result_path) - 1):
-    tot_cost += abs(result_path[i] - result_path[i + 1])
+    tot_cost = abs(head_pos - result_path[0]) + extra
+    for i in range(len(result_path) - 1):
+        tot_cost += abs(result_path[i] - result_path[i + 1])
 
-res_path_str = ','.join(str(x) for x in result_path)
-print res_path_str, '\n', tot_cost, '\n', '{},{}'.format(result_path[-1], tot_cost)
+    res_path_str = ','.join(str(x) for x in result_path)
+    print res_path_str, '\n', tot_cost, '\n', '{},{}'.format(result_path[-1], tot_cost)

@@ -52,9 +52,6 @@ def scan(head, queue):
         extra = queue[0] * 2
         path += list(reversed(queue[:cur_head_index + 1])) + queue[cur_head_index + 1:]
 
-    print '\n\nhead:{}\npath:{}'.format(head, path)
-    print 'extra:{}'.format(extra)
-
     return path, extra
 
     # fname = 'test1.txt'

@@ -50,12 +50,12 @@ def print_result(res_path, head_pos_):
     res_path_str = ','.join(str(x) for x in res_path)
     print res_path_str, '\n', tot_cost, '\n', '{},{}'.format(res_path[-1], tot_cost)
 
+if sys.argv[1:]:
+    fname = sys.argv[1:][0]
+    # fname = 'test7.txt'
+    head_pos, raw_pos_queue = parse_data(fname)
+    # print head_pos, pos_queue
+    pos_queue = sorted([int(num) for num in raw_pos_queue.split(',')])
+    result_path = sstf(head_pos, pos_queue)
 
-# fname = sys.argv[1:][0]
-fname = 'test1.txt'
-head_pos, raw_pos_queue = parse_data(fname)
-# print head_pos, pos_queue
-pos_queue = sorted([int(num) for num in raw_pos_queue.split(',')])
-result_path = sstf(head_pos, pos_queue)
-
-print_result(result_path, head_pos)
+    print_result(result_path, head_pos)
