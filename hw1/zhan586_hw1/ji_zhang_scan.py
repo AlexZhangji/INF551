@@ -8,28 +8,21 @@ def parse_data(fname):
         return int(text_list[0]), text_list[1]
 
 
-def f_scan(head_pos_, pos_queue_):
-    path = []
-    extra = 0
+def get_closest_num(pos_head_, pos_queue_):
+    closest_pos = []
+    least_distance = sys.maxint
 
-    while len(pos_queue_) > 10:
-        first_list = sorted(pos_queue_[:10])
-        # copy list of rest positions, in case 199 and 0 added to mess up the index
-        cur_path, cur_extra = scan(head_pos_, first_list)
-        extra += cur_extra
-        path += cur_path
+    for pos in pos_queue_:
+        distance = abs(pos_head_ - pos)
+        if distance < least_distance or distance == least_distance and pos < closest_pos:
+            least_distance = distance
+            closest_pos = pos
 
-        # update head position and position list
-        head_pos_ = path[-1]
-        pos_queue_ = pos_queue_[10:]
+    return closest_pos
 
-    if len(pos_queue_) <= 10:
-        pos_queue_ = sorted(pos_queue_)
-        cur_path, cur_extra = scan(head_pos_, pos_queue_)
-        extra += cur_extra
-        path += cur_path
 
-    return path, extra
+def remove_values_from_list(the_list, val):
+    return [value for value in the_list if value != val], [value for value in the_list if value == val]
 
 
 def scan(head, queue):
@@ -61,34 +54,19 @@ def scan(head, queue):
 
     return path, extra
 
-
-def get_closest_num(pos_head_, pos_queue_):
-    closest_pos = []
-    least_distance = sys.maxint
-
-    for pos in pos_queue_:
-        distance = abs(pos_head_ - pos)
-        if distance < least_distance or distance == least_distance and pos < closest_pos:
-            least_distance = distance
-            closest_pos = pos
-
-    return closest_pos
+    # fname = 'test1.txt'
 
 
-def remove_values_from_list(the_list, val):
-    return [value for value in the_list if value != val], [value for value in the_list if value == val]
-
-
-# fname = sys.argv[1:][0]
 if sys.argv[1:]:
     fname = sys.argv[1:][0]
-    # fname = 'test5.txt'
+    # fname = 'test1.txt'
 
     head_pos, raw_pos_queue = parse_data(fname)
-    # not same with scan or sstf, not sorted list
-    pos_queue = ([int(num) for num in raw_pos_queue.split(',')])
-    result_path, extra = f_scan(head_pos, pos_queue)
+    pos_queue = sorted([int(num) for num in raw_pos_queue.split(',')])
+    origin_queue = pos_queue[:]
 
+    result_path, extra = scan(head_pos, pos_queue)
+ 
     tot_cost = abs(head_pos - result_path[0]) + extra
     for i in range(len(result_path) - 1):
         tot_cost += abs(result_path[i] - result_path[i + 1])
