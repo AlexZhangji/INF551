@@ -1,3 +1,5 @@
+import sys
+
 import ji_zhang_scan  # is this fine???
 
 
