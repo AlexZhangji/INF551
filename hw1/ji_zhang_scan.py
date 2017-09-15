@@ -21,86 +21,58 @@ def get_closest_num(pos_head_, pos_queue_):
     return closest_pos
 
 
-def scan(head_pos_, pos_queue_):
+def remove_values_from_list(the_list, val):
+    return [value for value in the_list if value != val], [value for value in the_list if value == val]
+
+
+def scan(head, queue):
     path = []
-    left = True
-    cur_head_index = 0
+    next_head = get_closest_num(head, queue)
+    extra = 0  # use to track path cost for 0 and 199 added
 
-    zero_added = False
-    end_added = False
+    if head > max([num for num in queue]):
+        return list(reversed(queue)), 0
+    if head < min([num for num in queue]):
+        return queue, 0
 
-    if len(pos_queue_) == 0:
-        # print path
-        return path, []
-    # if two has same distance, head will move to inner most stack
-    next_head = get_closest_num(head_pos_, pos_queue_)
+    # handle the possibility that multiple num in list is the same as the head
+    if next_head == head:
+        # remove all equal head from the list
+        queue, head_list = remove_values_from_list(queue, head)
+        path += head_list
+        next_head = get_closest_num(head, queue)
 
-    if next_head != head_pos_:
-        path.append(next_head)
-        cur_head_index = pos_queue_.index(next_head)
-        pos_queue_.remove(next_head)
+    go_right = head < next_head
+    cur_head_index = queue.index(next_head)
+    if go_right:
+        extra += (199 - queue[-1]) * 2
+        path += queue[cur_head_index:] + list(reversed(queue[:cur_head_index]))
 
-    # print 'next head:{}'.format(next_head)
-
-    # if the head pos is at a same location with a list num
-    while head_pos_ == next_head:
-        path.append(head_pos_)
-        cur_head_index = pos_queue_.index(next_head)
-        pos_queue_.remove(head_pos_)
-
-    if 199 not in pos_queue_ and head_pos_ < next_head and head_pos_ != 199:
-        pos_queue_.append(199)
-        left = False
-        end_added = True
-
-
-
-    elif 0 not in pos_queue_ and head_pos_ > next_head and head_pos_ != 0:
-        pos_queue_.insert(0, 0)
-        left = True
-        cur_head_index += 1  # this is needed as it inserted in the beginning of the list
-        zero_added = True
-
-    # break the list to two parts, first iterate the one
-    if left:
-        path += list(reversed(pos_queue_[:cur_head_index])) + pos_queue_[cur_head_index:]
     else:
-        path += pos_queue_[cur_head_index:] + list(reversed(pos_queue_[:cur_head_index]))
+        extra = queue[0] * 2
+        path += list(reversed(queue[:cur_head_index + 1])) + queue[cur_head_index + 1:]
 
-    print path
-    added_index_list = []
-    if zero_added:
-        added_index_list.append(path.index(0))
-    if end_added:
-        added_index_list.append(path.index(199))
+    print '\n\nhead:{}\npath:{}'.format(head, path)
+    print 'extra:{}'.format(extra)
 
-    # print 'path:{}'.format(path)
-    return path, added_index_list
+    return path, extra
+
+    # fname = 'test1.txt'
 
 
-# fname = 'test1.txt'
 if sys.argv[1:]:
     fname = sys.argv[1:][0]
     # fname = 'test1.txt'
 
     head_pos, raw_pos_queue = parse_data(fname)
-    # print head_pos, pos_queue
-
     pos_queue = sorted([int(num) for num in raw_pos_queue.split(',')])
     origin_queue = pos_queue[:]
 
-    result_path, add_index_list = scan(head_pos, pos_queue)
+    result_path, extra = scan(head_pos, pos_queue)
 
-    tot_cost = abs(head_pos - result_path[0])
+    tot_cost = abs(head_pos - result_path[0]) + extra
     for i in range(len(result_path) - 1):
         tot_cost += abs(result_path[i] - result_path[i + 1])
-
-    # print 'added list:{}'.format(add_index_list)
-    # clean added 199 and 0
-    for index in enumerate(result_path):
-        index = int(index[0])
-        if index in add_index_list:
-            del result_path[index]
 
     res_path_str = ','.join(str(x) for x in result_path)
     print res_path_str, '\n', tot_cost, '\n', '{},{}'.format(result_path[-1], tot_cost)
