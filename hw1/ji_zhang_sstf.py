@@ -50,6 +50,7 @@ def print_result(res_path, head_pos_):
     res_path_str = ','.join(str(x) for x in res_path)
     print res_path_str, '\n', tot_cost, '\n', '{},{}'.format(res_path[-1], tot_cost)
 
+
 if sys.argv[1:]:
     fname = sys.argv[1:][0]
     # fname = 'test7.txt'
