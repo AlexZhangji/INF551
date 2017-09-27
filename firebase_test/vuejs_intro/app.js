@@ -1,8 +1,7 @@
 new Vue({
   el:'#vue-app',
   data:{
-    name:'Shaun',
-    job:'Ninja',
+    name:'Test',
     website:'https://google.com'
   },
   methods:{

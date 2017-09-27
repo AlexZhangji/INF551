@@ -7,20 +7,71 @@
 
     <link href="style.css" rel="stylesheet" />
     <script src="https://unpkg.com/vue"></script>
+    <script></script>
+
 </head>
 
 <body>
     <div id="vue-app">
-        <h1>{{greet('afternoon')}}</h1>
-        <p>Name:{{name}}</p>
-        <a v-bind:href="website">Google</a>
+        <!-- <h1>{{greet('Time test')}}</h1> -->
+        <!-- <p>Name:{{name}}</p> -->
+        <a v-bind:href="website">Link</a>
 
 
         <p>
-            Job:{{job}}
+            <!-- Test:{{name}} -->
         </p>
 
     </div>
+    <script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
+    <script>
+        function indeed_api(term, location) {
+            var params = {
+                // Request parameters
+                "q": term,
+                "l": location,
+                "publisher": "2186395790213512",
+                "co": "us",
+                "userip": "1.2.3.4",
+                "useragent": "Mozilla",
+                "v": "2",
+                "latlong":"1",
+                "format": "json",
+                "limit":"25",
+                'start': '0',
+            };
+
+            $.ajax({
+                    url: "http://api.indeed.com/ads/apisearch?" + $.param(params),
+                    beforeSend: function(xhrObj) {
+                        // Request headers
+                        xhrObj.setRequestHeader("Accept", "application/json");
+                        xhrObj.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+                        xhrObj.setRequestHeader("Cookie", "CTK=1bqgk1lqb183b5s1; ctkgen=1; BIGipServerjob=!W032eQek+UjgOkpgg9wi2p58QcifCc0ufdEqTxVf4fzZ0yHSOXWiumvj4GPmRRcYBUfkcQOwfnGQJTE=; JSESSIONID=4CAB4345C3D56DA978CEEDE1EC055D4D.jasxA_ord-job50; INDEED_CSRF_TOKEN=2ejH3jJLZbFIJygABdDhwKus8KnSH9C2");
+                        xhrObj.setRequestHeader("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.79 Safari/537.36");
+                        xhrObj.setRequestHeader("Host", "api.indeed.com");
+
+                        // xhrObj.setRequestHeader("Ocp-Apim-Subscription-Key", "597a9a7afb3a4dd8a8d1c4859b2b4ebf");
+                    },
+                    type: "GET",
+                    // Request body
+                    // data: "{body}",
+                })
+                .done(function(data) {
+                    // alert("success");
+                    console.log(data);
+                })
+                .fail(function() {
+                    // alert("error");
+                    console.log('error');
+                    return 'failed';
+                });
+        }
+
+        indeed_api('data engineer', 'los angeles');
+    </script>
+
+
     <script src="app.js"></script>
 </body>
 
