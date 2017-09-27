@@ -1,5 +1,7 @@
 import json
 
+import re
+
 
 def get_json(fname):
     with open(fname) as json_data:
@@ -36,9 +38,27 @@ def get_question_stats(question_json):
         elif first_word in filtered_cate:
             res_dict[first_word] += 1
 
+    with open('1a_stats.json', 'w') as f:
+        r = json.dumps(res_dict)
+        f.write(r)
+
     print res_dict
     return res_dict
 
+
+def search(terms, questions):
+    res_list = []
+    # assume that the key words are separated by the comma,
+    # convert from 'barca, andrews iniesta' to [barca, andrews, iniesta]
+    term_set = set(' '.join(terms.split(',')).split(' '))
+    for question in questions:
+        cur_q = re.sub('[^0-9a-zA-Z]+', '', question['question'])  # clean all non-alphanumeric strings
+        cur_q_set = set(cur_q.lower().split(' '))  # set of lowercase words in question
+
+        if not term_set.isdisjoint(cur_q_set):  # if two set share words
+            temp_dict = question
+            temp_dict['question'] = question['question']
+    
 
 fname = 'qa.json'
 raw_json = get_json(fname)
