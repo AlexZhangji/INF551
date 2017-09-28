@@ -1,7 +1,5 @@
 import json
 
-import re
-
 
 def get_json(fname):
     with open(fname) as json_data:
@@ -27,18 +25,20 @@ def get_question_stats(question_json):
     res_dict = {cate: 0 for cate in categories}
 
     for question in question_json:
-        cur_q = question['question'].lower()
+        cur_q = question['question'].lower().strip()
         first_word = cur_q.split(' ')[0]
         if first_word == 'how':
+            # add to 'how' count
+            res_dict[first_word] += 1
+
             sec_word = cur_q.split(' ')[1]
             if sec_word == 'many' or sec_word == 'much':
                 res_dict['{} {}'.format(first_word, sec_word)] += 1
-            else:
-                res_dict[first_word] += 1
+
         elif first_word in filtered_cate:
             res_dict[first_word] += 1
 
-    with open('1a_stats.json', 'w') as f:
+    with open('1a.json', 'w') as f:
         r = json.dumps(res_dict)
         f.write(r)
 
@@ -46,34 +46,7 @@ def get_question_stats(question_json):
     return res_dict
 
 
-def search(terms, questions):
-    res_list = []
-    # assume that the key words are separated by the comma,
-    # convert from 'barca, andrews iniesta' to [barca, andrews, iniesta]
-    term_set = set(' '.join(terms.lower().split(',')).split(' '))
-    print 'term set :{}'.format(term_set)
-    for question in questions:
-        cur_q = re.sub('[^0-9a-zA-Z ]+', '', question['question'])  # clean all non-alphanumeric strings
-        cur_q_set = set(cur_q.lower().split(' '))  # set of lowercase words in question
-
-        # print cur_q
-        # print cur_q_set
-
-        if not term_set.isdisjoint(cur_q_set):  # if two set share words
-            temp_dict = question
-            temp_dict['answer'] = temp_dict['answers'][0]['text']
-            # remove the answers entry from dict
-            del temp_dict['answers']
-
-            res_list.append(temp_dict)
-
-    with open('1b_search_res.json', 'w') as f:
-        r = json.dumps(res_list)
-        f.write(r)
-
-
 fname = 'qa.json'
 raw_json = get_json(fname)
 q_json = get_list_questions(raw_json)
 get_question_stats(q_json)
-search('determined', q_json)
