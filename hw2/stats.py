@@ -37,7 +37,6 @@ def get_question_stats(question_json):
 
         elif first_word in filtered_cate:
             res_dict[first_word] += 1
-
     with open('1a.json', 'w') as f:
         r = json.dumps(res_dict)
         f.write(r)

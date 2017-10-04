@@ -39,13 +39,14 @@ def search(terms, questions):
 
             print temp_dict
             res_list.append(temp_dict)
-
-    with open('1b.json', 'w') as f:
-        r = json.dumps(res_list)
-        f.write(r)
+    print res_list
+    print len(res_list)
+    # with open('1b.json', 'w') as f:
+    #     r = json.dumps(res_list)
+    #     f.write(r)
 
 
 fname = 'qa.json'
 raw_json = get_json(fname)
 q_json = get_list_questions(raw_json)
-search('super bowl', q_json)
+search('movie', q_json)
