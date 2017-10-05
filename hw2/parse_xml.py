@@ -28,7 +28,8 @@ def answer(food_list):
                 answer_list[2].append(name)
         # q4
         if tot_fat:
-            if sat_fat / tot_fat >= 1 / 2:
+            if sat_fat / tot_fat >= .5:
+                print 'q4 name:{}'.format(name)
                 answer_list[3].append(name)
         # q5
         cal_per_ser = tot_cal / serving
