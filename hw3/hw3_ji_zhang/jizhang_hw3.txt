@@ -1,0 +1,106 @@
+q1-a:
+SELECT
+	film.title,
+	category.NAME 
+FROM
+	( film JOIN film_category ON film.film_id = film_category.film_id )
+	JOIN category ON category.category_id = film_category.category_id 
+ORDER BY
+	film.title ASC;
+
+
+q1-b:
+SELECT DISTINCT
+	category.NAME,
+	COUNT( film_category.category_id ) AS category_count 
+FROM
+	film_category
+	JOIN category ON category.category_id = film_category.category_id 
+GROUP BY
+	film_category.category_id 
+ORDER BY
+	COUNT( film_category.category_id ) ASC;
+
+
+
+q1-c:
+SELECT DISTINCT
+	category.NAME,
+	COUNT( film_category.category_id ) AS cate_count 
+FROM
+	film_category
+	JOIN category ON category.category_id = film_category.category_id 
+GROUP BY
+	film_category.category_id 
+HAVING
+	COUNT( film_category.category_id ) >= 60 
+ORDER BY
+	COUNT( film_category.category_id ) DESC;
+
+
+q1-d:
+SELECT DISTINCT
+	category.NAME 
+FROM
+	film_category
+	JOIN category ON category.category_id = film_category.category_id 
+GROUP BY
+	film_category.category_id 
+ORDER BY
+	COUNT( film_category.category_id ) DESC 
+	LIMIT 1;
+
+
+q1-e:
+SELECT DISTINCT
+	( CONCAT( actor.first_name, '  ', actor.last_name ) ) AS actor_name 
+FROM
+	actor
+	JOIN film_actor ON film_actor.actor_id = actor.actor_id 
+GROUP BY
+	film_actor.actor_id 
+HAVING
+	COUNT( film_actor.actor_id ) >= 2 
+ORDER BY
+	( CONCAT( actor.first_name, '  ', actor.last_name ) ) ASC;
+
+
+q1-f:
+SELECT
+	COUNT( DISTINCT rental.customer_id ) 
+FROM
+	customer
+	JOIN rental ON rental.customer_id = customer.customer_id
+	JOIN inventory ON rental.inventory_id = inventory.inventory_id
+	JOIN film_category ON film_category.film_id = inventory.film_id
+	JOIN category ON film_category.category_id = category.category_id 
+WHERE
+	category.`name` = 'Action'
+AND
+	customer.active = 1
+	;
+
+
+q1-g:
+SELECT
+	COUNT( DISTINCT rental.customer_id ) 
+FROM
+	customer
+	JOIN rental ON rental.customer_id = customer.customer_id
+	JOIN inventory ON rental.inventory_id = inventory.inventory_id
+	JOIN film_category ON film_category.film_id = inventory.film_id
+	JOIN category ON film_category.category_id = category.category_id 
+WHERE
+	category.`name` = 'Action' 
+	AND customer.customer_id NOT IN (
+SELECT
+	customer.customer_id 
+FROM
+	customer
+	JOIN rental ON rental.customer_id = customer.customer_id
+	JOIN inventory ON rental.inventory_id = inventory.inventory_id
+	JOIN film_category ON film_category.film_id = inventory.film_id
+	JOIN category ON film_category.category_id = category.category_id 
+WHERE
+	category.`name` = 'Horror' 
+	);
