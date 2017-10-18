@@ -14,7 +14,7 @@ def search_query(term, cnx):
                    "WHERE LOWER(category.NAME) LIKE LOWER(%s);", (term,))
 
     for name in cursor:
-        print name
+        print name[0]
 
     cursor.close()
     cnx.close()
@@ -22,7 +22,7 @@ def search_query(term, cnx):
 
 if sys.argv[1:]:
     term = sys.argv[1:][0]
-    cnx = mysql.connector.connect(user='root', password='root',
+    cnx = mysql.connector.connect(user='root', password='',
                                   host='127.0.0.1',
                                   database='sakila')
     search_query(term, cnx)

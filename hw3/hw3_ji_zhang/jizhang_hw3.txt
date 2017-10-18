@@ -104,3 +104,42 @@ FROM
 WHERE
 	category.`name` = 'Horror' 
 	);
+
+
+
+q2-a:
+CREATE VIEW action_view AS SELECT
+DISTINCT customer.customer_id
+FROM
+	customer
+	JOIN rental ON rental.customer_id = customer.customer_id
+	JOIN inventory ON rental.inventory_id = inventory.inventory_id
+	JOIN film_category ON film_category.film_id = inventory.film_id
+	JOIN category ON film_category.category_id = category.category_id
+WHERE
+	category.`name` = 'Action'
+	;
+
+
+q2-b:
+CREATE VIEW horror_view AS SELECT
+DISTINCT customer.customer_id
+FROM
+	customer
+	JOIN rental ON rental.customer_id = customer.customer_id
+	JOIN inventory ON rental.inventory_id = inventory.inventory_id
+	JOIN film_category ON film_category.film_id = inventory.film_id
+	JOIN category ON film_category.category_id = category.category_id
+WHERE
+	category.`name` = 'Horror'
+	;
+
+
+q2-c:
+SELECT
+	COUNT( DISTINCT customer.customer_id ) 
+FROM
+	customer 
+WHERE
+	customer.customer_id IN ( SELECT action_view.customer_id FROM action_view ) 
+	AND customer.customer_id NOT IN ( SELECT horror_view.customer_id FROM horror_view )
