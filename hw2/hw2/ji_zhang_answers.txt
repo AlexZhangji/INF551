@@ -1,44 +1,29 @@
-<!-- q_a -->
 //food[contains(name,"Chicken")]/calories/@total
 410
 
 
-<!-- q_b -->
 nutrition/food[vitamins/c > 0]/name/text()
-<result>
-    Beef Frankfurter, Quarter Pound
-    Chicken Pot Pie
-    Cole Slaw
-    Potato Chips
-</result>
+Beef Frankfurter, Quarter Pound
+Chicken Pot Pie
+Cole Slaw
+Potato Chips
 
 
-<!-- q_c -->
 nutrition/food[vitamins/c > 0 and vitamins/a>0]/name/text()
-<result>
-    Chicken Pot Pie
-    Cole Slaw
-</result>
+Chicken Pot Pie
+Cole Slaw
 
 
-<!-- q_d -->
 nutrition/food[total-fat > 0 and saturated-fat div total-fat >= 0.5]/name/text()
-<name>Truffles, Dark Chocolate</name>
+Truffles, Dark Chocolate
 
 
-<!-- q_e -->
-<result>
-{
 let $max_chole :=  max(/nutrition/food/cholesterol)
-let $result := /nutrition/food[cholesterol=$max_chole]/name
+let $result := /nutrition/food[cholesterol=$max_chole]/name/text()
 return $result
-}
-</result>
-<result>
-<name>Eggs</name>
-</result>
+Eggs
 
-<!-- q_f -->
+
 <result>
 {
 for $food in (/nutrition/food)
