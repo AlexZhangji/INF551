@@ -1,4 +1,5 @@
 import sys
+
 import mysql.connector
 
 
@@ -10,10 +11,10 @@ def search_query(term, cnx):
                    "FROM " \
                    "film_category " \
                    "JOIN category ON category.category_id = film_category.category_id " \
-                   "WHERE LOWER(category.NAME) LIKE LOWER(%s);", (term,))
+                   "WHERE LOWER(category.NAME) LIKE LOWER(?);", (term,))
 
     for name in cursor:
-        print name[0]
+        print name
 
     cursor.close()
     cnx.close()
@@ -21,7 +22,7 @@ def search_query(term, cnx):
 
 if sys.argv[1:]:
     term = sys.argv[1:][0]
-    cnx = mysql.connector.connect(user='root', password='root',
+    cnx = mysql.connector.connect(user='root', password='',
                                   host='127.0.0.1',
                                   database='sakila')
     search_query(term, cnx)

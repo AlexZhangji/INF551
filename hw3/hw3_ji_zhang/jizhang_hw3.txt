@@ -1,7 +1,7 @@
 q1-a:
 SELECT
 	film.title,
-	category.NAME 
+	category.NAME
 FROM
 	( film JOIN film_category ON film.film_id = film_category.film_id )
 	JOIN category ON category.category_id = film_category.category_id 
@@ -11,7 +11,7 @@ ORDER BY
 
 q1-b:
 SELECT DISTINCT
-	category.NAME,
+	category.`name`,
 	COUNT( film_category.category_id ) AS category_count 
 FROM
 	film_category
@@ -19,8 +19,7 @@ FROM
 GROUP BY
 	film_category.category_id 
 ORDER BY
-	COUNT( film_category.category_id ) ASC;
-
+	category.`name`  ASC;
 
 
 q1-c:
@@ -52,7 +51,7 @@ ORDER BY
 
 
 q1-e:
-SELECT DISTINCT
+SELECT 
 	( CONCAT( actor.first_name, '  ', actor.last_name ) ) AS actor_name 
 FROM
 	actor
@@ -142,4 +141,4 @@ FROM
 	customer 
 WHERE
 	customer.customer_id IN ( SELECT action_view.customer_id FROM action_view ) 
-	AND customer.customer_id NOT IN ( SELECT horror_view.customer_id FROM horror_view )
+	AND customer.customer_id NOT IN ( SELECT horror_view.customer_id FROM horror_view );
