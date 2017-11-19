@@ -1,0 +1,43 @@
+1. Find the different (unique) cuisines of "Burger King".
+db.restaurants.distinct("cuisine", {"name":/Burger King/i})
+
+2. Find restaurants (output their names only) whose name
+contains "King" (matching is case-insensitive). Output
+first 10 results (duplicates are ok).
+
+# does this have to be unique names??
+db.restaurants.find({"name":/.*King.*/i}, {"name":1, "_id":0} ).limit(10)
+
+
+3. Find the number of cuisines whose category is not
+"Other".
+db.restaurants.find({"cuisine":{$ne:"Other"}} ).count()
+
+
+4. Find the number of Chinese and American cuisines (that
+is, either Chinese or American. No need to count
+"Chinese/Japanese", etc.)
+
+db.restaurants.find({
+$or:
+    [
+        {"cuisine":"Chinese"},
+        {"cuisine":"American"}
+    ]
+}).count()
+
+
+5. For each cuisine with at least 1000 restaurants, output
+the cuisine and the number of restaurants of the cuisine.
+
+db.restaurants.aggregate(
+[{$group:
+    {
+        _id: "$cuisine",
+        num_restaurants:{$sum:1}
+    }
+ },
+ {$match:
+    {num_restaurants: {$gte: 1000}}
+ }
+])
